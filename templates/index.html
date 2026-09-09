@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PhishGuard AI</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="#top" class="brand">
+                <span class="brand-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>
+                </span>
+                <span>PhishGuard AI</span>
+            </a>
+
+            <div class="nav-links">
+                <a href="#scanner">Scanner</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#about">About</a>
+                <a href="#scanner" class="cta">Analyze URL</a>
+            </div>
+        </div>
+    </nav>
+
+
+    <main id="top">
+
+        <section class="hero">
+
+            <div class="container hero-content">
+
+                <span class="badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>
+                    AI-Powered URL Security
+                </span>
+
+                <h1>
+                    Detect Suspicious URLs
+                    <span>Before You Click</span>
+                </h1>
+
+                <p class="hero-description">
+                    PhishGuard uses machine learning to analyze URL patterns
+                    and estimate whether a link may be legitimate or phishing.
+                </p>
+
+
+                <div class="scanner-card" id="scanner">
+
+                    <div class="scanner-header">
+                        <h2>URL Scanner</h2>
+                        <p>Enter a URL below to analyze its phishing risk.</p>
+                    </div>
+
+                    <form method="POST" class="scanner-form">
+
+                        <div class="input-wrapper">
+                            <span class="input-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>
+                            </span>
+
+                            <input
+                                type="text"
+                                name="url"
+                                placeholder="https://example.com"
+                                value="{{ url }}"
+                                required
+                                aria-label="URL to analyze"
+                            >
+                        </div>
+
+                        <button type="submit">
+                            Analyze URL
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+                        </button>
+
+                    </form>
+
+
+                    {% if result %}
+
+                    <div class="result-card
+                        {% if result.risk_level == 'HIGH' %}
+                            high-risk
+                        {% elif result.risk_level == 'MEDIUM' %}
+                            medium-risk
+                        {% else %}
+                            low-risk
+                        {% endif %}
+                    ">
+                        <div class="result-top">
+
+                            <div class="result-status">
+
+                                <span class="result-status-icon" aria-hidden="true">
+                                    {% if result.prediction == 'phishing' %}
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+                                    {% else %}
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                                    {% endif %}
+                                </span>
+
+                                <div>
+
+                                    <p class="result-label">
+                                        Analysis Result
+                                    </p>
+
+                                    <h3 class="result-title">
+                                        {% if result.prediction == 'phishing' %}
+                                            Phishing Detected
+                                        {% else %}
+                                            URL Looks Legitimate
+                                        {% endif %}
+                                    </h3>
+
+                                </div>
+
+                            </div>
+
+                            <div class="risk-badge">
+                                {{ result.risk_level }} RISK
+                            </div>
+
+                        </div>
+
+
+                        <div class="url-result">
+                            {{ url }}
+                        </div>
+
+
+                        <div class="risk-section">
+
+                            <div class="risk-info">
+                                <span>Phishing Risk</span>
+                                <strong>
+                                    {{ "%.2f"|format(result.phishing_score) }}%
+                                </strong>
+                            </div>
+
+
+                            <div class="progress-bar">
+
+                                <div
+                                    class="progress-fill"
+                                    data-progress-width="{{ result.phishing_score }}%">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="reason-section">
+
+                            <h4>Why this result?</h4>
+
+                            <ul class="reason-list">
+                                {% for reason in result.reasons %}
+                                    <li>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+                                        <span>{{ reason }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="how-section" id="how-it-works">
+
+            <div class="container">
+
+                <div class="section-heading">
+                    <p class="section-label">How It Works</p>
+                    <h2>From URL to Risk Prediction</h2>
+                </div>
+
+
+                <div class="steps">
+
+                    <div class="step-card">
+                        <span class="step-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>
+                        </span>
+                        <span class="step-number">01</span>
+
+                        <h3>Submit URL</h3>
+
+                        <p>
+                            Enter the website address that you want to analyze.
+                        </p>
+                    </div>
+
+
+                    <div class="step-card">
+                        <span class="step-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3"/><path d="M16 3a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3"/></svg>
+                        </span>
+                        <span class="step-number">02</span>
+
+                        <h3>Extract Features</h3>
+
+                        <p>
+                            PhishGuard analyzes structural characteristics
+                            such as URL length, symbols and hostname patterns.
+                        </p>
+                    </div>
+
+
+                    <div class="step-card">
+                        <span class="step-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                        </span>
+                        <span class="step-number">03</span>
+
+                        <h3>Machine Learning</h3>
+
+                        <p>
+                            A Random Forest model evaluates the extracted
+                            features to classify the URL.
+                        </p>
+                    </div>
+
+
+                    <div class="step-card">
+                        <span class="step-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </span>
+                        <span class="step-number">04</span>
+
+                        <h3>Risk Result</h3>
+
+                        <p>
+                            The application displays the predicted category
+                            and estimated phishing probability.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="about-section" id="about">
+
+            <div class="container about-content">
+
+                <div>
+                    <p class="section-label">About The Project</p>
+
+                    <h2>
+                        Machine Learning for Phishing Detection
+                    </h2>
+                </div>
+
+                <p>
+                    PhishGuard AI is a student machine-learning project that
+                    detects phishing URLs using structural URL features and a
+                    Random Forest classification model.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        <div class="container footer-content">
+            <p>PhishGuard AI</p>
+            <p>Machine Learning Cybersecurity Project</p>
+        </div>
+    </footer>
+
+    {% if result %}
+    <script>
+        const progressFill = document.querySelector('.progress-fill');
+        requestAnimationFrame(() => {
+            progressFill.style.width = progressFill.dataset.progressWidth;
+        });
+    </script>
+    {% endif %}
+
+</body>
+</html>
