@@ -321,6 +321,30 @@ button {
 }
 
 
+/* ERROR */
+
+.error-card {
+    margin-top: 20px;
+    padding: 16px 20px;
+    background: var(--color-danger-bg);
+    border: 1px solid var(--color-danger);
+    border-radius: var(--radius-md);
+    color: var(--color-danger);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    animation: result-in 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.error-card svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+
 /* RESULT */
 
 .result-card {

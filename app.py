@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request 
 import joblib
 import pandas as pd
+import re
 
 from src.feature_extraction import extract_basic_features
 
@@ -9,6 +10,25 @@ app = Flask(__name__)
 # Load model dan daftar fitur
 model = joblib.load("models/phishing_model.pkl")
 url_features = joblib.load("models/url_features.pkl")
+
+URL_PATTERN = re.compile(
+    r"^(https?://)?"
+    r"(([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}|localhost|(?:\d{1,3}\.){3}\d{1,3})"
+    r"(:\d+)?"
+    r"(/.*)?$",
+    re.IGNORECASE
+)
+
+
+def is_valid_url(url: str) -> bool:
+    return bool(url and URL_PATTERN.match(url.strip()))
+
+
+def normalize_url(url: str) -> str:
+    url = url.strip()
+    if not re.match(r"^https?://", url, re.IGNORECASE):
+        return f"http://{url}"
+    return url
 
 
 def get_reasons(extracted):
@@ -86,17 +106,23 @@ def analyze_url(url):
 @app.route("/", methods=["GET", "POST"])
 def home():
     result = None
+    error = None
     url = ""
 
     if request.method == "POST":
         url = request.form.get("url", "").strip()
 
-        if url:
-            result = analyze_url(url)
+        if not url:
+            error = "URL tidak boleh kosong."
+        elif not is_valid_url(url):
+            error = "Input bukan URL valid. Masukkan domain atau URL lengkap (contoh: example.com atau https://example.com)."
+        else:
+            result = analyze_url(normalize_url(url))
 
     return render_template(
         "index.html",
         result=result,
+        error=error,
         url=url
     )
 
