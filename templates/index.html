@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,10 +30,10 @@
             </a>
 
             <div class="nav-links">
-                <a href="#scanner">Scanner</a>
-                <a href="#how-it-works">How It Works</a>
-                <a href="#about">About</a>
-                <a href="#scanner" class="cta">Analyze URL</a>
+                <a href="#scanner">Pemindai</a>
+                <a href="#how-it-works">Cara Kerja</a>
+                <a href="#about">Tentang</a>
+                <a href="#scanner" class="cta">Analisis URL</a>
             </div>
         </div>
     </nav>
@@ -47,25 +47,25 @@
 
                 <span class="badge">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>
-                    AI-Powered URL Security
+                    Keamanan URL Berbasis AI
                 </span>
 
                 <h1>
-                    Detect Suspicious URLs
-                    <span>Before You Click</span>
+                    Deteksi URL Mencurigakan
+                    <span>Sebelum Anda Klik</span>
                 </h1>
 
                 <p class="hero-description">
-                    PhishGuard uses machine learning to analyze URL patterns
-                    and estimate whether a link may be legitimate or phishing.
+                    PhishGuard menggunakan machine learning untuk menganalisis pola URL
+                    dan memperkirakan apakah suatu tautan aman atau terindikasi phishing.
                 </p>
 
 
                 <div class="scanner-card" id="scanner">
 
                     <div class="scanner-header">
-                        <h2>URL Scanner</h2>
-                        <p>Enter a URL below to analyze its phishing risk.</p>
+                        <h2>Pemindai URL</h2>
+                        <p>Masukkan URL di bawah untuk menganalisis risiko phishing.</p>
                     </div>
 
                     <form method="POST" class="scanner-form">
@@ -81,12 +81,12 @@
                                 placeholder="https://example.com"
                                 value="{{ url }}"
                                 required
-                                aria-label="URL to analyze"
+                                aria-label="URL yang akan dianalisis"
                             >
                         </div>
 
                         <button type="submit">
-                            Analyze URL
+                            Analisis URL
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
                         </button>
 
@@ -125,14 +125,14 @@
                                 <div>
 
                                     <p class="result-label">
-                                        Analysis Result
+                                        Hasil Analisis
                                     </p>
 
                                     <h3 class="result-title">
                                         {% if result.prediction == 'phishing' %}
-                                            Phishing Detected
+                                            Terdeteksi Phishing
                                         {% else %}
-                                            URL Looks Legitimate
+                                            URL Tampak Aman
                                         {% endif %}
                                     </h3>
 
@@ -141,7 +141,7 @@
                             </div>
 
                             <div class="risk-badge">
-                                {{ result.risk_level }} RISK
+                                RISIKO {% if result.risk_level == 'HIGH' %}TINGGI{% elif result.risk_level == 'MEDIUM' %}SEDANG{% else %}RENDAH{% endif %}
                             </div>
 
                         </div>
@@ -155,7 +155,7 @@
                         <div class="risk-section">
 
                             <div class="risk-info">
-                                <span>Phishing Risk</span>
+                                <span>Risiko Phishing</span>
                                 <strong>
                                     {{ "%.2f"|format(result.phishing_score) }}%
                                 </strong>
@@ -176,7 +176,7 @@
 
                         <div class="reason-section">
 
-                            <h4>Why this result?</h4>
+                            <h4>Mengapa hasil ini?</h4>
 
                             <ul class="reason-list">
                                 {% for reason in result.reasons %}
@@ -205,8 +205,8 @@
             <div class="container">
 
                 <div class="section-heading">
-                    <p class="section-label">How It Works</p>
-                    <h2>From URL to Risk Prediction</h2>
+                    <p class="section-label">Cara Kerja</p>
+                    <h2>Dari URL Menjadi Prediksi Risiko</h2>
                 </div>
 
 
@@ -218,10 +218,10 @@
                         </span>
                         <span class="step-number">01</span>
 
-                        <h3>Submit URL</h3>
+                        <h3>Kirim URL</h3>
 
                         <p>
-                            Enter the website address that you want to analyze.
+                            Masukkan alamat situs web yang ingin Anda analisis.
                         </p>
                     </div>
 
@@ -232,11 +232,11 @@
                         </span>
                         <span class="step-number">02</span>
 
-                        <h3>Extract Features</h3>
+                        <h3>Ekstraksi Fitur</h3>
 
                         <p>
-                            PhishGuard analyzes structural characteristics
-                            such as URL length, symbols and hostname patterns.
+                            PhishGuard menganalisis karakteristik struktur URL
+                            seperti panjang URL, simbol, dan pola hostname.
                         </p>
                     </div>
 
@@ -250,8 +250,8 @@
                         <h3>Machine Learning</h3>
 
                         <p>
-                            A Random Forest model evaluates the extracted
-                            features to classify the URL.
+                            Model Random Forest mengevaluasi fitur-fitur yang
+                            diekstraksi untuk mengklasifikasikan URL.
                         </p>
                     </div>
 
@@ -262,11 +262,11 @@
                         </span>
                         <span class="step-number">04</span>
 
-                        <h3>Risk Result</h3>
+                        <h3>Hasil Risiko</h3>
 
                         <p>
-                            The application displays the predicted category
-                            and estimated phishing probability.
+                            Aplikasi menampilkan kategori hasil prediksi
+                            dan estimasi probabilitas phishing.
                         </p>
                     </div>
 
@@ -282,17 +282,17 @@
             <div class="container about-content">
 
                 <div>
-                    <p class="section-label">About The Project</p>
+                    <p class="section-label">Tentang Proyek</p>
 
                     <h2>
-                        Machine Learning for Phishing Detection
+                        Machine Learning untuk Deteksi Phishing
                     </h2>
                 </div>
 
                 <p>
-                    PhishGuard AI is a student machine-learning project that
-                    detects phishing URLs using structural URL features and a
-                    Random Forest classification model.
+                    PhishGuard AI adalah proyek machine learning yang mendeteksi
+                    URL phishing berdasarkan karakteristik struktural URL menggunakan model
+                    klasifikasi Random Forest.
                 </p>
 
             </div>
@@ -305,7 +305,7 @@
     <footer>
         <div class="container footer-content">
             <p>PhishGuard AI</p>
-            <p>Machine Learning Cybersecurity Project</p>
+            <p>Proyek Keamanan Siber Berbasis Machine Learning</p>
         </div>
     </footer>
 

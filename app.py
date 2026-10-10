@@ -35,34 +35,34 @@ def get_reasons(extracted):
     reasons = []
 
     if extracted.get("length_url", 0) > 75:
-        reasons.append("URL is unusually long")
+        reasons.append("URL sangat panjang")
 
     if extracted.get("nb_at", 0) > 0:
-        reasons.append("URL contains @ symbol")
+        reasons.append("URL mengandung simbol @")
 
     if extracted.get("nb_hyphens", 0) >= 3:
-        reasons.append("URL contains many hyphens")
+        reasons.append("URL mengandung banyak tanda hubung (-)")
 
     if extracted.get("nb_subdomains", 0) >= 3:
-        reasons.append("URL contains multiple subdomains")
+        reasons.append("URL memiliki banyak subdomain")
 
     if extracted.get("ratio_digits_url", 0) > 0.3:
-        reasons.append("URL contains a high number of digits")
+        reasons.append("URL memiliki proporsi angka yang tinggi")
 
     if extracted.get("https_token", 0) == 1:
-        reasons.append("URL does not use HTTPS")
+        reasons.append("URL tidak menggunakan protokol HTTPS")
 
     if extracted.get("punycode", 0) == 1:
-        reasons.append("Domain uses punycode encoding")
+        reasons.append("Domain menggunakan encoding punycode")
 
     if extracted.get("port", 0) == 1:
-        reasons.append("URL uses an explicit port")
+        reasons.append("URL menggunakan nomor port khusus")
 
     if extracted.get("prefix_suffix", 0) == 1:
-        reasons.append("Domain contains a hyphen")
+        reasons.append("Domain mengandung tanda hubung (-)")
 
     if not reasons:
-        reasons.append("No obvious suspicious URL patterns were found")
+        reasons.append("Tidak ditemukan pola URL yang mencurigakan")
 
     return reasons
 
